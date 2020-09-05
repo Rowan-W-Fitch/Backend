@@ -19,3 +19,8 @@ class BeachSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beach
         fields = "__all__"
+
+    def create(self, validated_data):
+        beach = self.Meta.model(**validated_data)
+        beach.save()
+        return beach
