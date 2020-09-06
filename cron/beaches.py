@@ -1,5 +1,5 @@
 from .webscrape import create_beach_api, update_beach_api
-from .models import Beach
+from apis.models import Beach
 
 beaches = {
     "Blacks": ["https://www.surfline.com/surf-report/blacks/5842041f4e65fad6a770883b", 1, 32.8907, 117.2535],
@@ -27,9 +27,9 @@ beaches = {
 
 def create(request):
     for name in beaches.keys():
-        print(create_beach_api(name, beaches[name][0], beaches[name][1], beaches[name][2], beaches[name][3]))
+        create_beach_api(name, beaches[name][0], beaches[name][1], beaches[name][2], beaches[name][3])
 
 def update(request):
     for name in beaches.keys():
         beach = Beach.objects.get(name = name)
-        print(update_beach_api(beach.id, beach.surfline_url, beach.name, beach.latitude, beach.longitude, beach.beach_dir))
+        update_beach_api(beach.id, beach.surfline_url, beach.name, beach.latitude, beach.longitude, beach.beach_dir)

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -143,4 +144,8 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
+]
+
+CRON_JOBS = [
+    ('0 * * * *', 'cron.beaches.update'),
 ]

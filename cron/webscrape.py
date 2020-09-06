@@ -4,6 +4,8 @@ import requests
 import numpy as np
 from rest_framework.response import Response
 import json
+from apis.serializers import BeachSerializer
+from apis.models import Beach
 
 dirs = ['N', 'E', 'S', 'W']
 
@@ -170,7 +172,6 @@ def update_beach_api(beach_id, url, name, lat, lng, beach_dir):
     #water_temp_data
     temp = get_water_temp(soup)
     data = {
-        'beach_id': beach_id, 
         'name': name,
         'surfline_url': url,
         'latitude': float(lat),
@@ -187,6 +188,14 @@ def update_beach_api(beach_id, url, name, lat, lng, beach_dir):
         'tide_height': float(tide),
         'water_temp': int(temp)
     }
-    #send req to the create beach api endpt
-    update_res = requests.post('http://localhost:8000/update_beach', json= data)
-    return Response(update_res)
+    try:
+        beach = Beach.objects.get(id = beach_id)
+    except Beach.DoesNotExist:
+        return False
+
+    serializer = BeachSerializer(beach, data = data)
+    if serializer.is_valid():
+        serializer.save()
+        return True
+    else:
+        return False
