@@ -130,6 +130,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+GOOGLE_API_KEY = env('GOOGLE_MAPS_API_KEY')
 
 STATIC_URL = '/static/'
 REST_FRAMEWORK = {

@@ -12,6 +12,8 @@ from django.contrib.auth.models import User
 from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework.parsers import JSONParser
+from ml.decide import MachineLearningModel
+import queue
 # Create your views here.
 
 
@@ -101,3 +103,28 @@ class UpdateBeach(APIView):
         else:
             print(bch.errors)
             raise exceptions.AuthenticationFailed("invalid data")
+
+
+class RankBeaches(APIView):
+
+    #helper function to get initial queue
+    def get_arr_queue(self, max_dist, lat, lng):
+        res = queue.Queue()
+        for bch in Beach.objects.all():
+            np_arr = bch.to_np_array(lat, lng)
+            if max_dist >= float(np_arr[11]):
+                res.put(np_arr)
+        return res
+
+    def post(self, request, *args, **kwargs):
+        max_dist = request.data.get('max_distance')
+        lat = request.data.get('latitude')
+        lng = request.data.get('longitude')
+
+        if not max_dist or not lat or not lng:
+            return Response({ 'error':'invalid data' })
+
+        ML = MachineLearningModel()
+        init_queue = self.get_arr_queue(max_dist, lat, lng)
+
+        return ML.narrow_down(init_queue)
