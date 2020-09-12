@@ -32,29 +32,33 @@ class MachineLearningModel():
 
     shit_array = np.array([0, 50, 0, 0, 0, 0, 0, 2, 2, 0, 0, 10000])
 
-    #step 1, np_arrays is a queue of np arrays
-    def breakup_beaches(self, np_arrays):
-        length = np_arrays.qsize()
+    #step 1, beach_queue is a queue of Beach objects
+    def breakup_beaches(self, beach_queue, lat, lng):
+        length = beach_queue.qsize()
         list = []
         while length > 0:
+            ids = []
             outer = []
             inner = []
             while len(inner) < 3:
                 if length == 0:
                     inner.append(self.shit_array)
+                    ids.append(-1)
                 else:
-                    inner.append(np_arrays.get())
+                    bch = beach_queue.get()
+                    inner.append(bch.to_np_array(lat, lng))
+                    ids.append(bch.id)
                     length -=1
             outer.append(np.array(inner))
-            list.append(np.array(outer))
+            list.append((ids, np.array(outer)))
         return list
 
     #step 2 and 3, for each 3d np array, get winner and put into queue
     def queue_beaches(self, list):
         q = queue.Queue()
         #rank each trio of beaches
-        for array in list:
-            out = self.pickle_model.predict(array.transpose(0,2,1).reshape(1,-1))
+        for tup in list:
+            out = self.pickle_model.predict(tup[1].transpose(0,2,1).reshape(1,-1))
             win_idx = -1
             max_score = -1
             #get highest ranked beach
@@ -63,18 +67,20 @@ class MachineLearningModel():
                     win_idx = i
                     max_score = out[0][i]
             #put highest ranked beach into queue
-            q.put(array[0][win_idx])
-
+            win_id = tup[0][win_idx]
+            if win_id > 0:
+                bch = Beach.objects.get(id = win_id)
+                q.put(bch)
         return q
 
     #step 4
-    def narrow_down(self, array_queue):
-        while array_queue.qsize() > 1:
-            list = self.breakup_beaches(array_queue)
-            array_queue = self.queue_beaches(list)
+    def narrow_down(self, beach_queue, lat, lng):
+        while beach_queue.qsize() > 1:
+            list = self.breakup_beaches(beach_queue, lat, lng)
+            beach_queue = self.queue_beaches(list)
         #now perform the ML model one more time, and return ranking as JSON
-        fin_list =self.breakup_beaches(array_queue)
-        out = self.pickle_model.predict(fin_list[0].transpose(0,2,1).reshape(1,-1))
+        fin_list = self.breakup_beaches(beach_queue, lat, lng)
+        out = self.pickle_model.predict(fin_list[0][1].transpose(0,2,1).reshape(1,-1))
         #vals and idxs
         max = -1
         max_idx = -1
@@ -97,49 +103,32 @@ class MachineLearningModel():
             if out[0][i] < mid:
                 low = out[0][i]
                 low_idx = i
+        #get three beaches
+        top_id = fin_list[0][0][max_idx]
+        mid_id = fin_list[0][0][mid_idx]
+        low_id = fin_list[0][0][low_idx]
+        #start three bchs as none
+        top_bch = None
+        mid_bch = None
+        low_bch = None
+        #query them if the id no is valid
+        if top_id > 0:
+            top_bch = Beach.objects.get(id = top_id)
+        if mid_id > 0:
+            mid_bch = Beach.objects.get(id = mid_id)
+        if low_id > 0:
+            low_bch = Beach.objects.get(id = low_id)
         #return json of the ranks
         return Response({
-            'best': self.query_np(fin_list[0][0][max_idx]).id,
-            'best_name': self.query_np(fin_list[0][0][max_idx]).name,
-            'best_lat': self.query_np(fin_list[0][0][max_idx]).latitude,
-            'best_lon': self.query_np(fin_list[0][0][max_idx]).longitude,
+            'best_name': top_bch.name if top_bch else "none",
+            'best_lat':top_bch.latitude if top_bch else "none",
+            'best_lon': top_bch.longitude if top_bch else "none",
 
-            'mid': self.query_np(fin_list[0][0][mid_idx]).id,
-            'mid_name': self.query_np(fin_list[0][0][mid_idx]).name,
-            'mid_lat': self.query_np(fin_list[0][0][mid_idx]).latitude,
-            'mid_lon': self.query_np(fin_list[0][0][mid_idx]).longitude,
+            'mid_name': mid_bch.name if mid_bch else "none",
+            'mid_lat': mid_bch.latitude if mid_bch else "none",
+            'mid_lon': mid_bch.longitude if mid_bch else "none",
 
-            'low': self.query_np(fin_list[0][0][low_idx]).id,
-            'low_name': self.query_np(fin_list[0][0][low_idx]).name,
-            'low_lat': self.query_np(fin_list[0][0][low_idx]).latitude,
-            'low_lon': self.query_np(fin_list[0][0][low_idx]).longitude
+            'low_name': low_bch.name if low_bch else "none",
+            'low_lat': low_bch.latitude if low_bch else "none",
+            'low_lon': low_bch.longitude if low_bch else "none"
         })
-
-    #query beaches based on an np val
-    def query_np(self, np_array):
-        print(
-        int(np_array[0]),
-        int(np_array[1]),
-        int(np_array[2]),
-        float(np_array[3]),
-        float(np_array[4]),
-        int(np_array[5]),
-        int(np_array[6]),
-        int(np_array[7]),
-        int(np_array[8]),
-        float(np_array[9]),
-        float(np_array[10])
-        )
-        return Beach.objects.get(
-            beach_dir = int(np_array[0]),
-            wind_speed = int(np_array[1]),
-            wind_dir = int(np_array[2]),
-            swell1_height = float(np_array[3]),
-            swell2_height = float(np_array[4]),
-            swell1_period = int(np_array[5]),
-            swell2_period = int(np_array[6]),
-            swell1_dir = int(np_array[7]),
-            swell2_dir = int(np_array[8]),
-            tide_height = float(np_array[9]),
-            water_temp = float(np_array[10])
-        )

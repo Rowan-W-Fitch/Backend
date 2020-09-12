@@ -113,7 +113,7 @@ class RankBeaches(APIView):
         for bch in Beach.objects.all():
             np_arr = bch.to_np_array(lat, lng)
             if max_dist >= float(np_arr[11]):
-                res.put(np_arr)
+                res.put(bch)
         return res
 
     def post(self, request, *args, **kwargs):
@@ -127,4 +127,4 @@ class RankBeaches(APIView):
         ML = MachineLearningModel()
         init_queue = self.get_arr_queue(max_dist, lat, lng)
 
-        return ML.narrow_down(init_queue)
+        return ML.narrow_down(init_queue, lat, lng)
