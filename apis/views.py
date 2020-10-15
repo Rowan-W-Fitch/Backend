@@ -13,6 +13,7 @@ from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework.parsers import JSONParser
 from ml.decide import MachineLearningModel
+from ml.decide2 import MachineLearningModel2
 import queue
 # Create your views here.
 
@@ -124,7 +125,7 @@ class RankBeaches(APIView):
         if not max_dist or not lat or not lng:
             return Response({ 'error':'invalid data' })
 
-        ML = MachineLearningModel()
+        ML = MachineLearningModel2()
         init_queue = self.get_arr_queue(max_dist, lat, lng)
 
-        return ML.narrow_down(init_queue, lat, lng)
+        return ML.get_ranks(init_queue, lat, lng)

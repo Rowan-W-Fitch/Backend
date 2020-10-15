@@ -30,7 +30,7 @@ class MachineLearningModel():
     with open(os.path.join(os.path.join(BD, 'ml'),'linear_reg.pkl'), 'rb') as file:
         pickle_model = pickle.load(file)
 
-    shit_array = np.array([0, 50, 0, 0, 0, 0, 0, 2, 2, 0, 0, 10000])
+    shit_array = np.array([0, 50, 0, 0.1, 1.2, 2, 2, 2, 2, 0, 51, 100])
 
     #step 1, beach_queue is a queue of Beach objects
     def breakup_beaches(self, beach_queue, lat, lng):
@@ -62,7 +62,11 @@ class MachineLearningModel():
             win_idx = -1
             max_score = -1
             #get highest ranked beach
+            for t in tup[0]:
+                if t > 0:
+                    print(Beach.objects.get(id = t).name)
             for i in range(len(out[0])):
+                print(out[0][i])
                 if out[0][i] > max_score:
                     win_idx = i
                     max_score = out[0][i]
