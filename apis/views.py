@@ -15,6 +15,7 @@ from rest_framework.parsers import JSONParser
 from ml.decide import MachineLearningModel
 from ml.decide2 import MachineLearningModel2
 import queue
+import json
 # Create your views here.
 
 
@@ -129,3 +130,18 @@ class RankBeaches(APIView):
         init_queue = self.get_arr_queue(max_dist, lat, lng)
 
         return ML.get_ranks(init_queue, lat, lng)
+
+class GetAllBeaches(APIView):
+
+    def get(self, request, *args, **kwargs):
+        beaches = Beach.objects.all()
+        res = []
+        for beach in beaches:
+            res.append({
+                "lat": str(beach.latitude),
+                "lng": str(beach.longitude),
+                "name": beach.name
+            })
+        return Response({
+            json.dumps(res)
+        })
