@@ -6,6 +6,8 @@ from rest_framework.authtoken.models import Token
 import numpy as np
 import googlemaps
 from rest_api_server.settings import GOOGLE_API_KEY as g_key
+from math import radians, cos, sin, asin, sqrt
+
 # Create your models here.
 
 class Beach(models.Model):
@@ -25,10 +27,26 @@ class Beach(models.Model):
     tide_height = models.DecimalField(default = 0.0, max_digits = 10, decimal_places = 7)
     water_temp = models.DecimalField(default = 0.0, max_digits = 10, decimal_places = 7)
 
+    def calc_dist(self, lat, lng):
+        lon1 = radians(lng)
+        lon2 = radians(self.longitude)
+        lat1 = radians(lat)
+        lat2 = radians(self.latitude)
+
+        # Haversine formula
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+
+        c = 2 * asin(sqrt(a))
+
+        r = 3956
+
+        # calculate the result
+        return(c * r)
+
     def to_np_array(self, lat, lng):
-        gmaps = googlemaps.Client(key=g_key)
-        drive_dirs = gmaps.directions(origin = (lat,lng), destination = (self.latitude,self.longitude))
-        drive_dist = float(drive_dirs[0]['legs'][0]['distance']['text'].split(" ")[0])
+        dist = self.calc_dist(lat, lng)
         return np.array([
             self.beach_dir,
             self.wind_speed, self.wind_dir,
@@ -36,7 +54,7 @@ class Beach(models.Model):
             self.swell1_period, self.swell2_period,
             self.swell1_dir, self.swell2_dir,
             self.tide_height, self.water_temp,
-            drive_dist
+            dist
             ])
 
 

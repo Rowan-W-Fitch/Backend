@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserRegistration, CustomAuthToken, CreateBeach, UpdateBeach, RankBeaches, GetAllBeaches
+from .views import UserRegistration, CustomAuthToken, CreateBeach, UpdateBeach, RankBeaches, GetAllBeaches, CheckAuth
 
 urlpatterns = [
     path('register', UserRegistration.as_view()),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('update_beach', UpdateBeach.as_view()),
     path('get_spots', RankBeaches.as_view()),
     path('markers', GetAllBeaches.as_view()),
+    path('check', CheckAuth.as_view()),
 ]

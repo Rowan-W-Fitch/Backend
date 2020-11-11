@@ -63,6 +63,19 @@ class CustomAuthToken(APIView):
             'id':usr.id
         })
 
+class CheckAuth(APIView):
+
+    def post(self, request, *args, **kwargs):
+        token = request.data.get('token')
+        try:
+            usr = Token.objects.get(key = token)
+        except Token.DoesNotExist:
+            raise exceptions.AuthenticationFailed("invalid user")
+
+        return Response({
+            "user": usr.key
+        })
+
 
 class CreateBeach(mixins.CreateModelMixin, generics.GenericAPIView):
     serializer_class = BeachSerializer
