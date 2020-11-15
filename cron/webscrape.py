@@ -148,7 +148,7 @@ def create_beach_api(name, url, beach_dir, lat, lng):
         'water_temp': float(temp)
     }
     #send req to the create beach api endpt
-    create_res = requests.post('http://localhost:8000/create_beach', json = data)
+    create_res = requests.post('https://optimal-stoke.herokuapp.com/create_beach', json = data)
     return Response(create_res)
 
 def update_beach_api(beach_id, url, name, lat, lng, beach_dir):
