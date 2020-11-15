@@ -75,4 +75,5 @@ def update(request):
         beach = Beach.objects.get(name = name)
         update_beach_api(beach.id, beach.surfline_url, beach.name, beach.latitude, beach.longitude, beach.beach_dir)
 
-create()
+if __name__ == '__main__':
+    create()
