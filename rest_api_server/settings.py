@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
-    "https://optimalstoke.herokuapp.com".
+    "https://optimalstoke.herokuapp.com",
 ]
 
 CRON_JOBS = [
