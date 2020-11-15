@@ -61,7 +61,7 @@ beaches = {
 }
 
 
-def create(request):
+def create():
     for name in beaches.keys():
         print(name)
         create_beach_api(name, beaches[name][0], beaches[name][1], beaches[name][2], beaches[name][3])
@@ -74,3 +74,5 @@ def update(request):
     for name in beaches.keys():
         beach = Beach.objects.get(name = name)
         update_beach_api(beach.id, beach.surfline_url, beach.name, beach.latitude, beach.longitude, beach.beach_dir)
+
+create()
