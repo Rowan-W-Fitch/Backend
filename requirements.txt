@@ -23,7 +23,6 @@ entrypoints==0.3
 googlemaps==4.4.2
 gunicorn==20.0.4
 idna==2.10
-importlib-metadata==2.0.0
 ipykernel==5.4.0
 ipython==7.18.1
 ipython-genutils==0.2.0
