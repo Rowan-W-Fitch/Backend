@@ -61,7 +61,7 @@ beaches = {
 }
 
 
-def create():
+def create(request):
     for name in beaches.keys():
         print(name)
         create_beach_api(name, beaches[name][0], beaches[name][1], beaches[name][2], beaches[name][3])
