@@ -1,4 +1,4 @@
-from webscrape import create_beach_api, update_beach_api
+from .webscrape import create_beach_api, update_beach_api
 from apis.models import Beach
 import requests
 from rest_framework.response import Response
