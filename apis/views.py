@@ -100,12 +100,12 @@ class CreateBeach(mixins.CreateModelMixin, generics.GenericAPIView):
 class UpdateBeach(APIView):
     def post(self, request, *args, **kwargs):
 
-        id_no = request.data.pop('beach_id')
-        if not id_no:
+        url = request.data.get('surfline_url')
+        if not url:
             return None
 
         try:
-            beach = Beach.objects.get(id = id_no)
+            beach = Beach.objects.get(surfline_url = url)
         except Beach.DoesNotExist:
             raise exceptions.AuthenticationFailed("beach dne")
 
