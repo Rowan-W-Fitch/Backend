@@ -70,12 +70,12 @@ def create(request):
     })
 
 
-def update():
-    for name in beaches.keys():
-        beach = Beach.objects.get(name = name)
-        print(beach.name)
-        res = update_beach_api(beach.id, beach.surfline_url, beach.name, beach.latitude, beach.longitude, beach.beach_dir)
-        print(res)
-
-
-update()
+# def update():
+#     for name in beaches.keys():
+#         beach = Beach.objects.get(name = name)
+#         print(beach.name)
+#         res = update_beach_api(beach.id, beach.surfline_url, beach.name, beach.latitude, beach.longitude, beach.beach_dir)
+#         print(res)
+#
+#
+# update()

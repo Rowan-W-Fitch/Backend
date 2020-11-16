@@ -151,51 +151,51 @@ def create_beach_api(name, url, beach_dir, lat, lng):
     create_res = requests.post('https://optimal-stoke.herokuapp.com/create_beach', json = data)
     return Response(create_res)
 
-def update_beach_api(beach_id, url, name, lat, lng, beach_dir):
-    res = requests.get(url)
-    soup = BeautifulSoup(res.text, 'lxml') #lxml is a pareser library for structured data
-    #wind data
-    wind = get_wind(soup)
-    wind_speed = get_wind_speed(wind)
-    wind_dir = get_wind_dir(wind)
-    #swell data
-    swells = get_swells(soup)
-    clean_swlls = clean_swells(swells)
-    #get swell data
-    dict = height_period_dir_dict(clean_swlls)
-    swell1 = get_longest_period_swell(dict)
-    swell1_ht, swell1_pd, swell1_dir = swell1[0], swell1[1], swell1[2]
-    swell2 = get_tallest_height(dict)
-    swell2_ht, swell2_pd, swell2_dir = swell2[0], swell2[1], swell2[2]
-    #tide data
-    tide = get_tide(soup)
-    #water_temp_data
-    temp = get_water_temp(soup)
-    data = {
-        'name': name,
-        'surfline_url': url,
-        'latitude': float(lat),
-        'longitude': float(lng),
-        'beach_dir': beach_dir,
-        'wind_speed': wind_speed,
-        'wind_dir': wind_dir,
-        'swell1_height': float(swell1_ht),
-        'swell2_height': float(swell2_ht),
-        'swell1_period': swell1_pd,
-        'swell2_period': swell2_pd,
-        'swell1_dir': swell1_dir,
-        'swell2_dir': swell2_dir,
-        'tide_height': float(tide),
-        'water_temp': int(temp)
-    }
-    try:
-        beach = Beach.objects.get(id = beach_id)
-    except Beach.DoesNotExist:
-        return False
-
-    serializer = BeachSerializer(beach, data = data)
-    if serializer.is_valid():
-        serializer.save()
-        return True
-    else:
-        return False
+# def update_beach_api(beach_id, url, name, lat, lng, beach_dir):
+#     res = requests.get(url)
+#     soup = BeautifulSoup(res.text, 'lxml') #lxml is a pareser library for structured data
+#     #wind data
+#     wind = get_wind(soup)
+#     wind_speed = get_wind_speed(wind)
+#     wind_dir = get_wind_dir(wind)
+#     #swell data
+#     swells = get_swells(soup)
+#     clean_swlls = clean_swells(swells)
+#     #get swell data
+#     dict = height_period_dir_dict(clean_swlls)
+#     swell1 = get_longest_period_swell(dict)
+#     swell1_ht, swell1_pd, swell1_dir = swell1[0], swell1[1], swell1[2]
+#     swell2 = get_tallest_height(dict)
+#     swell2_ht, swell2_pd, swell2_dir = swell2[0], swell2[1], swell2[2]
+#     #tide data
+#     tide = get_tide(soup)
+#     #water_temp_data
+#     temp = get_water_temp(soup)
+#     data = {
+#         'name': name,
+#         'surfline_url': url,
+#         'latitude': float(lat),
+#         'longitude': float(lng),
+#         'beach_dir': beach_dir,
+#         'wind_speed': wind_speed,
+#         'wind_dir': wind_dir,
+#         'swell1_height': float(swell1_ht),
+#         'swell2_height': float(swell2_ht),
+#         'swell1_period': swell1_pd,
+#         'swell2_period': swell2_pd,
+#         'swell1_dir': swell1_dir,
+#         'swell2_dir': swell2_dir,
+#         'tide_height': float(tide),
+#         'water_temp': int(temp)
+#     }
+#     try:
+#         beach = Beach.objects.get(id = beach_id)
+#     except Beach.DoesNotExist:
+#         return False
+#
+#     serializer = BeachSerializer(beach, data = data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return True
+#     else:
+#         return False
