@@ -52,7 +52,16 @@ beaches = {
     "Steamer Lane": ["https://www.surfline.com/surf-report/steamer-lane/5842041f4e65fad6a7708805", 2, 36.9517, -122.0261],
     "Waddell Creek": ["https://www.surfline.com/surf-report/waddell-creek/5842041f4e65fad6a7708980", 3, 37.0963, -122.2782],
     "Ocean Beach": ["https://www.surfline.com/surf-report/north-ocean-beach/5d9b68deab58860001c7359e", 3, 37.7594, -122.5107],
-    "Dead Mans": ["https://www.surfline.com/surf-report/fort-point/5842041f4e65fad6a770897a", 0, 37.8106, -122.4771]
+    "Dead Mans": ["https://www.surfline.com/surf-report/fort-point/5842041f4e65fad6a770897a", 0, 37.8106, -122.4771],
+    "Vilano": ["https://www.surfline.com/surf-report/vilano/5842041f4e65fad6a7708aa5", 1, 29.9359254, -81.3389262],
+    "A1A Gas Station": ["https://www.surfline.com/surf-report/gate-station/5842041f4e65fad6a7708a9b", 1, 30.0224542, -81.3252771],
+    "Micklers": ["https://www.surfline.com/surf-report/crossroads/5842041f4e65fad6a7708a8a", 1, 30.1616135, -81.3575616],
+    "The Lodge": ["https://www.surfline.com/surf-report/sawgrass/5842041f4e65fad6a7708a8b", 1, 30.2201983, -81.3735406],
+    "8th Ave": ["https://www.surfline.com/surf-report/8th-ave-south/584204214e65fad6a7709bc7", 1, 30.2810763, -81.3898893],
+    "Jax Beach Pier": ["https://www.surfline.com/surf-report/jacksonville-pier-southside/5c4798f0f5f7d0000136e94f", 1, 30.2932266, -81.3914165],
+    "Neptune Beach": ["https://www.surfline.com/surf-report/neptune-beach/584204214e65fad6a7709d0f", 1, 30.3132981, -81.3949989],
+    "Atlantic Beach": ["https://www.surfline.com/surf-report/atlantic-beach/5842041f4e65fad6a7708a98", 1, 30.3334631, -81.4022438],
+    "The Poles": ["https://www.surfline.com/surf-report/mayport-poles/5842041f4e65fad6a7708a8d", 1, 30.3724544, -81.3986815]
 }
 
 from bs4 import BeautifulSoup
