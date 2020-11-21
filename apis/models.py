@@ -24,8 +24,6 @@ class Beach(models.Model):
     swell2_period = models.PositiveIntegerField(default = 0)
     swell1_dir = models.PositiveIntegerField(default = 0)
     swell2_dir = models.PositiveIntegerField(default = 0)
-    tide_height = models.DecimalField(default = 0.0, max_digits = 10, decimal_places = 7)
-    water_temp = models.DecimalField(default = 0.0, max_digits = 10, decimal_places = 7)
 
     def calc_dist(self, lat, lng):
         lon1 = radians(lng)
@@ -53,7 +51,6 @@ class Beach(models.Model):
             self.swell1_height, self.swell2_height,
             self.swell1_period, self.swell2_period,
             self.swell1_dir, self.swell2_dir,
-            self.tide_height, self.water_temp,
             dist
             ])
 
