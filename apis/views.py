@@ -127,7 +127,7 @@ class RankBeaches(APIView):
         res = queue.Queue()
         for bch in Beach.objects.all():
             np_arr = bch.to_np_array(lat, lng)
-            if max_dist >= float(np_arr[11]):
+            if max_dist >= float(np_arr[9]):
                 res.put(bch)
         return res
 
