@@ -108,14 +108,14 @@ def get_wind_speed(wind):
     return wind.split(" ")[0]
 
 
-def get_tide(soup):
-    tide = soup.find('div', {'class':'quiver-spot-forecast-summary__stat-container quiver-spot-forecast-summary__stat-container--tide'})
-    return re.sub(r'Tide','', tide.get_text()).split('FT')[0]
-
-
-def get_water_temp(soup):
-    temp = soup.find('div', {'class': 'quiver-water-temp'})
-    return re.sub(r'Water Temp', '', temp.get_text()).split(' - ')[0]
+# def get_tide(soup):
+#     tide = soup.find('div', {'class':'quiver-spot-forecast-summary__stat-container quiver-spot-forecast-summary__stat-container--tide'})
+#     return re.sub(r'Tide','', tide.get_text()).split('FT')[0]
+#
+#
+# def get_water_temp(soup):
+#     temp = soup.find('div', {'class': 'quiver-water-temp'})
+#     return re.sub(r'Water Temp', '', temp.get_text()).split(' - ')[0]
 
 
 def height_period_dir_dict(clean_swlls):
@@ -181,9 +181,7 @@ def update_beach_api(name, url, beach_dir, lat, lng):
         'swell1_period': swell1_pd,
         'swell2_period': swell2_pd,
         'swell1_dir': swell1_dir,
-        'swell2_dir': swell2_dir,
-        'tide_height': float(tide),
-        'water_temp': int(temp)
+        'swell2_dir': swell2_dir
     }
 
     res = requests.post("https://optimal-stoke.herokuapp.com/update_beach", data = data)
