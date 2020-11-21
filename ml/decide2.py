@@ -31,7 +31,7 @@ class MachineLearningModel2():
     with open(os.path.join(os.path.join(BD, 'ml'),'linear_reg.pkl'), 'rb') as file:
         pickle_model = pickle.load(file)
 
-    shit_array = np.array([0, 50, 0, 0.1, 1.2, 2, 2, 2, 2, 0, 51, 100])
+    shit_array = np.array([0, 50, 0, 0.1, 1.2, 2, 2, 2, 2, 100])
 
     #step 1, beach_queue is a queue of Beach objects
     def breakup_beaches(self, beach_queue, lat, lng):
