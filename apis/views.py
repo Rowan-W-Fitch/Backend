@@ -12,7 +12,6 @@ from django.contrib.auth.models import User
 from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework.parsers import JSONParser
-from ml.decide import MachineLearningModel
 from ml.decide2 import MachineLearningModel2
 import queue
 import json
