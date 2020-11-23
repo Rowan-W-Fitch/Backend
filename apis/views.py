@@ -98,7 +98,7 @@ class CreateBeach(mixins.CreateModelMixin, generics.GenericAPIView):
 
 class UpdateBeach(APIView):
     def post(self, request, *args, **kwargs):
-        print("req: ", request)
+        print("req: ", request.data)
         url = request.data.get('surfline_url')
         if not url:
             return None
