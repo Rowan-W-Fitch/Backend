@@ -13,6 +13,7 @@ from math import radians, cos, sin, asin, sqrt
 class Beach(models.Model):
     name = models.CharField(default = "", max_length = 200)
     surfline_url = models.CharField(default = "", max_length = 500)
+    surfline_report = models.CharField(default = "", max_length = 50)
     latitude = models.DecimalField(default = 0.0, max_digits = 11, decimal_places = 7)
     longitude = models.DecimalField(default = 0.0, max_digits = 11, decimal_places = 7)
     beach_dir = models.PositiveIntegerField(default = 0)

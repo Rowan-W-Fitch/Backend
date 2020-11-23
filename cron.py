@@ -97,6 +97,10 @@ def get_wind(soup):
     wind = soup.find('div', {'class': 'quiver-spot-forecast-summary__stat-container quiver-spot-forecast-summary__stat-container--wind'})
     return re.sub(r'Wind', '', re.sub(r'KTS', " ", wind.get_text()))
 
+def get_surfline_height(soup):
+    ht = soup.find('div', {'class': 'quiver-surf-height'})
+    return ht.get_text()
+
 def get_wind_dir(wind):
     wind_str = wind.split(" ")[1][0]
     for i in range(len(dirs)):
@@ -164,6 +168,7 @@ def update_beach_api(name, url, beach_dir, lat, lng):
     swell1_ht, swell1_pd, swell1_dir = swell1[0], swell1[1], swell1[2]
     swell2 = get_tallest_height(dict)
     swell2_ht, swell2_pd, swell2_dir = swell2[0], swell2[1], swell2[2]
+    surfline_report = get_surfline_height(soup)
     #tide data
     tide = get_tide(soup)
     #water_temp_data
@@ -171,6 +176,7 @@ def update_beach_api(name, url, beach_dir, lat, lng):
     data = {
         'name': name,
         'surfline_url': url,
+        'surfline_report': surfline_report,
         'latitude': float(lat),
         'longitude': float(lng),
         'beach_dir': beach_dir,

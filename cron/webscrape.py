@@ -87,6 +87,10 @@ def get_tallest_height(dict):
             tallest = key
     return ans
 
+def get_surfline_height(soup):
+    ht = soup.find('div', {'class': 'quiver-surf-height'})
+    return ht.get_text()
+
 
 def get_data_to_numpy(beach_dir, driving_dist, url, lat, lng):
     res = requests.get(url)
@@ -126,6 +130,7 @@ def create_beach_api(name, url, beach_dir, lat, lng):
     swell1_ht, swell1_pd, swell1_dir = swell1[0], swell1[1], swell1[2]
     swell2 = get_tallest_height(dict)
     swell2_ht, swell2_pd, swell2_dir = swell2[0], swell2[1], swell2[2]
+    surfline_ht = get_surfline_height(soup)
     #tide data
     tide = get_tide(soup)
     #water_temp_data
@@ -133,6 +138,7 @@ def create_beach_api(name, url, beach_dir, lat, lng):
     data = {
         'name': name,
         'surfline_url': url,
+        'surfline_report': surfline_ht,
         'latitude': lat,
         'longitude': lng,
         'beach_dir': beach_dir,
