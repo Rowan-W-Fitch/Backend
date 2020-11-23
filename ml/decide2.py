@@ -83,7 +83,9 @@ class MachineLearningModel2():
             arr.append({
                 'name': bch.name,
                 'lat': str(bch.latitude),
-                'lon': str(bch.longitude)
+                'lon': str(bch.longitude),
+                'surfline_url': bch.surfline_url,
+                "report": bch.surfline_report
             })
         #return arr in response
         json_arr = json.dumps(arr)
